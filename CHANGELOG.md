@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/airtonix/Lamp/compare/v1.1.3...v1.1.4) (2023-10-15)
+
+
+### Bug Fixes
+
+* 3-upload-correct-file ([#13](https://github.com/airtonix/Lamp/issues/13)) ([d8b4669](https://github.com/airtonix/Lamp/commit/d8b4669adb9270da885a508a70f3e8dac956b22b))
+
 ## [1.1.3](https://github.com/airtonix/Lamp/compare/v1.1.2...v1.1.3) (2023-10-15)
 
 
