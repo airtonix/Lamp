@@ -66,9 +66,9 @@ jobs:
       
       - name: Build
         if: ${{ steps.release.outputs.release_created == 'true' }}
-        id: build
-        uses: ./.github/actions/compile
-      
+        run: |
+          ./build.sh Debug
+
       # only upload the release artifact if we're online and not testing
       - name: Upload Release Artifact
         if: ${{ steps.release.outputs.release_created == 'true' }}
