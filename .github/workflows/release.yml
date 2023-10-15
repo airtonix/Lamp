@@ -32,18 +32,25 @@ jobs:
         id: release
         env:
             RELEASE_PLEASE_TAG: ${{ steps.release-please.outputs.release_tag }}
+            RELEASE_PLEASE_RELEASE_CREATED: ${{ steps.release-please.outputs.releases_created }}
         run: |
           if [ "${{ env.ACT }}" = "true" ]; then
+
             echo "OFFLINE: release created"
             RELEASE_CREATED="true"
             TAG_CREATED=$(git describe --tags --abbrev=1)
-            elif [ "${{ steps.release-release.outputs.release_created }}" = "true" ]; then
-            echo "ONLINEL: release created"
+          
+          elif [ "${RELEASE_PLEASE_RELEASE_CREATED}" = "true" ]; then
+            
+            echo "ONLINE: release created"
             RELEASE_CREATED="true"
             TAG_CREATED=${RELEASE_PLEASE_TAG}
+          
           else 
+          
             echo "ONLINE: release not created"
             RELEASE_CREATED="false"
+
           fi
 
           echo "release_created=${RELEASE_CREATED}" >> $GITHUB_OUTPUT
@@ -66,9 +73,9 @@ jobs:
       
       - name: Build
         if: ${{ steps.release.outputs.release_created == 'true' }}
-        id: build
-        uses: ./.github/actions/compile
-      
+        run: |
+          ./build.sh Debug
+
       # only upload the release artifact if we're online and not testing
       - name: Upload Release Artifact
         if: ${{ steps.release.outputs.release_created == 'true' }}
@@ -79,6 +86,6 @@ jobs:
             echo "OFFLINE: skipping upload"
             cp -r ./build/Lamp ./build/lamp-x11-${{ steps.release.outputs.release_tag }}
           else
-            gh release upload ${{ steps.release.outputs.release_tag }} ./build/lamp#lamp-x11-${{ steps.release.outputs.release_tag }}
+            gh release upload ${{ steps.release.outputs.release_tag }} ./build/Lamp#lamp-x11-${{ steps.release.outputs.release_tag }}
           fi
           
